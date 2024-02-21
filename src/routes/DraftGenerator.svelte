@@ -26,7 +26,8 @@
                 if (
                     (filter == FilterState.Exclude &&
                         pokemon["doublesTier"] == tier) ||
-                    (filter == FilterState.Require && pokemon["doublesTier"] != tier)
+                    (filter == FilterState.Require &&
+                        pokemon["doublesTier"] != tier)
                 ) {
                     add = false;
                 }
@@ -36,7 +37,8 @@
                 if (
                     (filter == FilterState.Exclude &&
                         pokemon["natDexTier"] == tier) ||
-                    (filter == FilterState.Require && pokemon["natDexTier"] != tier)
+                    (filter == FilterState.Require &&
+                        pokemon["natDexTier"] != tier)
                 ) {
                     add = false;
                 }
@@ -88,8 +90,14 @@
         on:click={generate}>Generate</button
     >
 </div>
-<div class="grid grid-cols-4">
-    {#each output as name}
+<div class="grid grid-cols-4 w-3/4">
+    {#each output as name, id}
+        {#if id % 24 == 0}
+            <hr class="border-gray-400" />
+            <hr class="border-gray-400" />
+            <hr class="border-gray-400" />
+            <hr class="border-gray-400" />
+        {/if}
         <p>{name}</p>
     {/each}
 </div>

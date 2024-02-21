@@ -3,10 +3,12 @@
     import FilterSelector from "./FilterSelector.svelte";
 </script>
 
-<div class="flex w-full justify-center">
+<div class="flex w-full justify-center mt-5">
     <div class="w-2/3">
         <FilterSelector />
     </div>
 </div>
 
-<DraftGenerator/>
+<div class="flex w-full items-center flex-col">
+    <DraftGenerator />
+</div>
