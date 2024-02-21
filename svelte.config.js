@@ -17,7 +17,7 @@ const config = {
             fallback: "404.html"
         }),
         paths: {
-            base: dev ? "" : "/your-repo-name",
+            base: dev ? "" : "/random-draft",
         },
     }
 };
