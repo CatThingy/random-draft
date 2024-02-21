@@ -78,7 +78,7 @@
         Amount:
         <input
             bind:value={count}
-            class="invalid:border-red-300 border-gray-300 border-b-2 w-[2em] m-2 text-right"
+            class="invalid:border-red-300 border-gray-300 border-b-2 w-[2em] m-2 text-right bg-transparent"
             inputmode="numeric"
             pattern="\d+"
         />
@@ -86,7 +86,7 @@
 </div>
 <div>
     <button
-        class="p-2 border-gray-400 border-[1px] rounded-md bg-gray-50 hover:bg-gray-100 active:bg-gray-200"
+        class="text-black px-2 py-1 my-1 border-gray-400 border-[1px] rounded-md bg-gray-50 hover:bg-gray-100 active:bg-gray-200"
         on:click={generate}>Generate</button
     >
 </div>
