@@ -13,21 +13,21 @@
     function updateSinglesFilter(label: SinglesTiers) {
         return (event: MouseEvent) => {
             let target: any = event.target;
-            $filters.singles.set(label, target.value);
+            $filters.singles.set(label, target.checked);
         };
     }
 
     function updateDoublesFilter(label: DoublesTiers) {
         return (event: MouseEvent) => {
             let target: any = event.target;
-            $filters.doubles.set(label, target.value);
+            $filters.doubles.set(label, target.checked);
         };
     }
 
     function updateNatDexFilter(label: NatDexTiers) {
         return (event: MouseEvent) => {
             let target: any = event.target;
-            $filters.natdex.set(label, target.value);
+            $filters.natdex.set(label, target.checked);
         };
     }
 </script>

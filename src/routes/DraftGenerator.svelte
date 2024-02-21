@@ -1,34 +1,44 @@
 <script lang="ts">
     import { dex } from "./dex";
     import { filters } from "./filters";
+    import { DoublesTiers, NatDexTiers, SinglesTiers } from "./tiers";
 
     let count = 48;
     let output: String[] = [];
 
     function generate(_event: MouseEvent) {
-        console.log($dex);
         output = [];
         let valid: String[] = [];
 
         for (const pokemon of $dex.values()) {
             let add = true;
             for (const [tier, filter] of $filters.singles.entries()) {
-                add &&= filter || pokemon["tier"] != tier;
+                if (!filter && pokemon["tier"] == tier) {
+                    add = false;
+                }
             }
 
             for (const [tier, filter] of $filters.doubles.entries()) {
-                add &&= filter || pokemon["doublesTier"] != tier;
+                if (!filter && pokemon["doublesTier"] == tier) {
+                    add = false;
+                }
             }
 
             for (const [tier, filter] of $filters.natdex.entries()) {
-                add &&= filter || pokemon["natDexTier"] != tier;
+                if (!filter && pokemon["natDexTier"] == tier) {
+                    add = false;
+                }
             }
 
-            add &&=
-                pokemon["natDexTier"] != null && pokemon["tier"] != "Illegal";
+            if (
+                !Object.values(SinglesTiers).includes(pokemon["tier"]) &&
+                !Object.values(DoublesTiers).includes(pokemon["doublesTier"]) &&
+                !Object.values(NatDexTiers).includes(pokemon["natDexTier"])
+            ) {
+                add = false;
+            }
 
             if (add) {
-                console.log(pokemon["name"]);
                 valid.push(pokemon["name"]);
             }
         }
@@ -39,8 +49,6 @@
             ];
             return;
         }
-
-        console.log(valid);
 
         for (let i = 0; i < count; i++) {
             let num = Math.floor(Math.random() * valid.length);
