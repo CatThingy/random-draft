@@ -1,6 +1,6 @@
 <script lang="ts">
     import { dex } from "./dex";
-    import { filters } from "./filters";
+    import { FilterState, filters } from "./filters";
     import { DoublesTiers, NatDexTiers, SinglesTiers } from "./tiers";
 
     let count = 48;
@@ -13,19 +13,31 @@
         for (const pokemon of $dex.values()) {
             let add = true;
             for (const [tier, filter] of $filters.singles.entries()) {
-                if (!filter && pokemon["tier"] == tier) {
+                if (
+                    (filter == FilterState.Exclude &&
+                        pokemon["tier"] == tier) ||
+                    (filter == FilterState.Require && pokemon["tier"] != tier)
+                ) {
                     add = false;
                 }
             }
 
             for (const [tier, filter] of $filters.doubles.entries()) {
-                if (!filter && pokemon["doublesTier"] == tier) {
+                if (
+                    (filter == FilterState.Exclude &&
+                        pokemon["doublesTier"] == tier) ||
+                    (filter == FilterState.Require && pokemon["doublesTier"] != tier)
+                ) {
                     add = false;
                 }
             }
 
             for (const [tier, filter] of $filters.natdex.entries()) {
-                if (!filter && pokemon["natDexTier"] == tier) {
+                if (
+                    (filter == FilterState.Exclude &&
+                        pokemon["natDexTier"] == tier) ||
+                    (filter == FilterState.Require && pokemon["natDexTier"] != tier)
+                ) {
                     add = false;
                 }
             }
