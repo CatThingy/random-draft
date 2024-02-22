@@ -44,14 +44,6 @@
                 }
             }
 
-            if (
-                !Object.values(SinglesTiers).includes(pokemon["tier"]) &&
-                !Object.values(DoublesTiers).includes(pokemon["doublesTier"]) &&
-                !Object.values(NatDexTiers).includes(pokemon["natDexTier"])
-            ) {
-                add = false;
-            }
-
             if (add) {
                 valid.push(pokemon["name"]);
             }
@@ -59,7 +51,9 @@
 
         if (valid.length < count) {
             output = [
-                "Not enough Pokemon; try removing some filters or decreasing the amount.",
+                `Only ${valid.length} pokemon match${
+                    valid.length == 1 ? "es" : ""
+                } these filters; try removing some filters or decreasing the amount.`,
             ];
             return;
         }

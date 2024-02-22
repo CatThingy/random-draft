@@ -1,4 +1,5 @@
 import { writable } from "svelte/store";
+import { DoublesTiers, NatDexTiers, SinglesTiers } from "./tiers";
 export const dex = (() => {
     const { subscribe, set } = writable(new Map<String, any>());
 
@@ -22,21 +23,32 @@ export const dex = (() => {
         // WARNING: EXTREMELY DANGER
         // I trust Smogon to not change this format.
         .then((data) => eval("(" + data.split("= ")[1].slice(0, -1) + ")"));
-
     Promise.all([dex, formats])
         .then(([dex, formats]) => {
-            for (const entry of Object.entries(formats)) {
-                let key: String = entry[0];
-                let value: any = entry[1];
+            for (const entry of dex.entries()) {
+                let key: string = entry[0];
+                let dexEntry: any = entry[1];
+                if (formats[key] != null) {
+                    let format_data = formats[key];
+                    console.log(format_data);
 
-                if (dex.has(key)) {
-                    let data = dex.get(key);
+                    dexEntry["doublesTier"] = format_data["doublesTier"];
+                    dexEntry["natDexTier"] = format_data["natDexTier"];
 
-                    data["doublesTier"] = value["doublesTier"];
-                    data["natDexTier"] = value["natDexTier"];
+                    let has_formats =
+                        Object.values(SinglesTiers).includes(dexEntry["tier"]) ||
+                        Object.values(DoublesTiers).includes(dexEntry["doublesTier"]) ||
+                        Object.values(NatDexTiers).includes(dexEntry["natDexTier"]);
+
+                    if (!has_formats) {
+                        dex.delete(key);
+                    }
+                }
+                else {
+                    dex.delete(key);
                 }
             }
             return dex;
-        }).then(value => set(value));
+        }).then(value => { console.log(value); set(value); });
     return { subscribe };
 })();
