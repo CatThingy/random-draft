@@ -3,26 +3,22 @@
 
     import Filter, { Category } from "./Filter.svelte";
     import { filters } from "./filters";
+    import AttributeFilterSelector from "./AttributeFilterSelector.svelte";
 
-    function updateSinglesFilter(label: SinglesTiers) {
-        return (event: MouseEvent) => {
-            let target: any = event.target;
-            $filters.singles.set(label, target.checked);
-        };
+    let filterList: HTMLElement;
+    let attributeFilters: AttributeFilterSelector[] = [];
+
+    function addAttributeFilter() {
+        let filter = new AttributeFilterSelector({
+            target: filterList,
+        });
+        filter.$on("message", updateAttributeFilters);
+        attributeFilters.push(filter);
     }
 
-    function updateDoublesFilter(label: DoublesTiers) {
-        return (event: MouseEvent) => {
-            let target: any = event.target;
-            $filters.doubles.set(label, target.checked);
-        };
-    }
-
-    function updateNatDexFilter(label: NatDexTiers) {
-        return (event: MouseEvent) => {
-            let target: any = event.target;
-            $filters.natdex.set(label, target.checked);
-        };
+    function updateAttributeFilters(e: CustomEvent) {
+        console.log(e.target);
+        $filters.attribute.set(e.detail.target, e.detail.value);
     }
 </script>
 
@@ -36,16 +32,7 @@
             >
         {/each}
     </div>
-    <div class="ml-5 my-5 border-gray-300 border-r-2">
-        <p class="font-bold text-center">Doubles</p>
-        {#each Object.values(DoublesTiers) as tier}
-            <Filter
-                state={$filters.doubles.get(tier)}
-                marker={{ kind: Category.Doubles, tier }}>{tier}</Filter
-            >
-        {/each}
-    </div>
-    <div class="ml-5 my-5 pr-2">
+    <div class="ml-5 my-5 pr-2 border-r-2">
         <p class="font-bold text-center">National Dex</p>
         {#each Object.values(NatDexTiers) as tier}
             <Filter
@@ -54,19 +41,18 @@
             >
         {/each}
     </div>
+    <div class="ml-5 my-5 border-gray-300">
+        <p class="font-bold text-center">Doubles</p>
+        {#each Object.values(DoublesTiers) as tier}
+            <Filter
+                state={$filters.doubles.get(tier)}
+                marker={{ kind: Category.Doubles, tier }}>{tier}</Filter
+            >
+        {/each}
+    </div>
 </div>
-
-<style lang="postcss">
-    .checkbox {
-        @apply select-none aspect-square w-[1em] h-[1em] rounded-sm border-2 mx-1 p-[-0.25em] inline-block;
-    }
-
-    label input {
-        visibility: hidden;
-        display: block;
-        height: 0;
-        width: 0;
-        position: absolute;
-        overflow: hidden;
-    }
-</style>
+<details>
+    <summary> Attribute filters </summary>
+    <div bind:this={filterList}></div>
+    <button on:click={addAttributeFilter}>Add attribute filter</button>
+</details>

@@ -1,7 +1,6 @@
 <script lang="ts">
     import { dex } from "./dex";
-    import { FilterState, filters } from "./filters";
-    import { DoublesTiers, NatDexTiers, SinglesTiers } from "./tiers";
+    import { AttributeKind, FilterState, filters } from "./filters";
 
     let count = 48;
     let output: String[] = [];
@@ -39,6 +38,47 @@
                         pokemon["natDexTier"] == tier) ||
                     (filter == FilterState.Require &&
                         pokemon["natDexTier"] != tier)
+                ) {
+                    add = false;
+                }
+            }
+
+            for (const { attribute, filter } of $filters.attribute.values()) {
+                let filterMatches;
+                switch (attribute.kind) {
+                    case AttributeKind.Stats:
+                        filterMatches = attribute.evaluator(
+                            pokemon["baseStats"][attribute.stat],
+                        );
+                        break;
+                    case AttributeKind.Height:
+                        filterMatches = attribute.evaluator(pokemon["heightm"]);
+                        break;
+                    case AttributeKind.Weight:
+                        filterMatches = attribute.evaluator(
+                            pokemon["weightkg"],
+                        );
+                        break;
+                    case AttributeKind.Ability:
+                        filterMatches = pokemon["abilities"].includes(
+                            attribute.ability.toLowerCase(),
+                        );
+                        break;
+                    case AttributeKind.Type:
+                        filterMatches = pokemon["types"].includes(
+                            attribute.type.toLowerCase(),
+                        );
+                        break;
+                    case AttributeKind.EggGroups:
+                        filterMatches = pokemon["eggGroups"].includes(
+                            attribute.group.toLowerCase(),
+                        );
+                        break;
+                }
+
+                if (
+                    (filter == FilterState.Require && !filterMatches) ||
+                    (filter == FilterState.Exclude && filterMatches)
                 ) {
                     add = false;
                 }

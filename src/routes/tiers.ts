@@ -23,8 +23,6 @@ export enum DoublesTiers {
     DOU = "DOU",
     DUU = "DUU",
     BelowDUU = "(DUU)",
-    NFE = "NFE",
-    LC = "LC",
 }
 
 export enum NatDexTiers {

@@ -28,9 +28,17 @@ export const dex = (() => {
             for (const entry of dex.entries()) {
                 let key: string = entry[0];
                 let dexEntry: any = entry[1];
+
+                let stats: number[] = Object.values(dexEntry["baseStats"]);
+                let bst = stats.reduce((a: number, b: number): number => a + b, 0);
+
+                dexEntry["baseStats"]["bst"] = bst;
+                dexEntry["abilities"] = Object.values<string>(dexEntry["abilities"]).map((v: string): string => v.toLowerCase());
+                dexEntry["eggGroups"] = Object.values<string>(dexEntry["eggGroups"]).map((v: string): string => v.toLowerCase());
+                dexEntry["types"] = Object.values<string>(dexEntry["types"]).map((v: string): string => v.toLowerCase());
+
                 if (formats[key] != null) {
                     let format_data = formats[key];
-                    console.log(format_data);
 
                     dexEntry["doublesTier"] = format_data["doublesTier"];
                     dexEntry["natDexTier"] = format_data["natDexTier"];

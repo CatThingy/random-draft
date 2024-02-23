@@ -27,16 +27,16 @@
     import { FilterState, filters } from "./filters";
     import { DoublesTiers, NatDexTiers, SinglesTiers } from "./tiers";
 
-    export let state: FilterState = FilterState.Ignore;
+    export let state: FilterState = FilterState.Allow;
     export let marker: Marker;
 
     function updateFilter() {
-        if (state == FilterState.Ignore) {
+        if (state == FilterState.Allow) {
             state = FilterState.Require;
         } else if (state == FilterState.Require) {
             state = FilterState.Exclude;
         } else if (state == FilterState.Exclude) {
-            state = FilterState.Ignore;
+            state = FilterState.Allow;
         }
 
         switch (marker.kind) {
