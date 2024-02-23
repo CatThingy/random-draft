@@ -1,6 +1,7 @@
 <script lang="ts">
     import { createEventDispatcher } from "svelte";
     import {
+        filters,
         type AttributeFilter,
         FilterState,
         type Attribute,
@@ -12,7 +13,7 @@
     let partialEvaluator: (a: number) => (b: number) => boolean = (_) => (_) =>
         true;
     let filter = FilterState.Require;
-    let self: HTMLElement | null = null;
+    let self: HTMLElement = document.body;
 
     const dispatch = createEventDispatcher();
 
@@ -137,6 +138,17 @@
             on:change={updateAttributeFilter}
         />
     {/if}
+
+    <button
+        class="w-4 aspect-square"
+        on:click={() => {
+            $filters.attribute.delete(self);
+            self?.remove();
+        }}
+    >
+        <div class="w-full h-1/6 relative bg-red-500 top-[16.666%] rotate-45"></div>
+        <div class="w-full h-1/6 relative bg-red-500 -rotate-45"></div>
+    </button>
 </div>
 
 <style lang="postcss">

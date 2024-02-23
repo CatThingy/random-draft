@@ -17,7 +17,10 @@
     }
 
     function updateAttributeFilters(e: CustomEvent) {
-        console.log(e.target);
+        $filters.attribute.set(e.detail.target, e.detail.value);
+    }
+
+    function removeAttributeFilter(e: CustomEvent) {
         $filters.attribute.set(e.detail.target, e.detail.value);
     }
 </script>
